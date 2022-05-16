@@ -4,6 +4,39 @@ import ProductList from '../components/productlist';
 
 class Home extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      products: []
+    };
+  }
+
+  componentDidMount = () => {
+    this.loadList();
+  };
+
+  loadList = () => {
+    fetch('/api/list').then(response => {
+      return response.text();
+    }).then(value => {
+      this.setState({ products: JSON.parse(value) });
+    });
+  }
+
+  onSubmitForm = data => {
+    const request = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    };
+    fetch('/api/addproduct', request)
+      .then(response => {
+        if (response.status == 200) {
+          this.loadList()
+        }
+      });
+  };
+
   render = () => {
     return (
       <div className='container'>
@@ -14,8 +47,8 @@ class Home extends React.Component {
                 Product details
               </div>
               <div className="card-body">
-                <ProductForm />
-                <ProductList />
+                <ProductForm onSubmitForm={this.onSubmitForm} />
+                <ProductList products={this.state.products} />
               </div>
             </div>
           </div>

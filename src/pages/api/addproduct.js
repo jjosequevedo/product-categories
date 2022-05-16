@@ -5,11 +5,15 @@ export default async (req, res) => {
     try {
         const db = await connectToDatabase;
         if (db instanceof Db) {
-            db.collection('products').insertOne({ 'product_name': 'Product 2', 'quantity': 5, 'price': 4.50 });
+            db.collection('products').insertOne({
+                'product_name': req.body.product_name,
+                'quantity': req.body.quantity,
+                'price': req.body.price
+            });
         }
-        res.status(200);
+        res.status(200).json("Successful!");
     } catch (e) {
-        res.status(500);
+        res.status(500).json("Error!");
         console.error(e);
     }
 };
