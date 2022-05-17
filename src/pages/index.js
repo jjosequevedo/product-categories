@@ -32,7 +32,25 @@ class Home extends React.Component {
     fetch('/api/addproduct', request)
       .then(response => {
         if (response.status == 200) {
-          this.loadList()
+          this.loadList();
+        }
+      });
+  };
+
+  onEdit = product => {
+
+  };
+
+  onDelete = product => {
+    const request = {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(product)
+    };
+    fetch('/api/deleteproduct', request)
+      .then(response => {
+        if (response.status == 200) {
+          this.loadList();
         }
       });
   };
@@ -48,7 +66,10 @@ class Home extends React.Component {
               </div>
               <div className="card-body">
                 <ProductForm onSubmitForm={this.onSubmitForm} />
-                <ProductList products={this.state.products} />
+                <ProductList
+                  products={this.state.products}
+                  onEdit={this.onEdit}
+                  onDelete={this.onDelete} />
               </div>
             </div>
           </div>

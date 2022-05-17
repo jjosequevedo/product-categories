@@ -2,6 +2,24 @@ import React from 'react';
 
 class ProductList extends React.Component {
 
+    constructor(props) {
+        super(props);
+    }
+
+    onEdit = (e, product) => {
+        e.preventDefault();
+        if (typeof this.props.onEdit == 'function') {
+            this.props.onEdit(product);
+        }
+    };
+
+    onDelete = (e, product) => {
+        e.preventDefault();
+        if (typeof this.props.onEdit == 'function') {
+            this.props.onDelete(product);
+        }
+    };
+
     render = () => {
         return (
             <>
@@ -32,8 +50,8 @@ class ProductList extends React.Component {
                                                 <td>{p.quantity}</td>
                                                 <td>{p.price}</td>
                                                 <td>
-                                                    <button className='btn btn-default'>Edit</button>
-                                                    <button className='btn btn-danger'>Delete</button>
+                                                    <button className='btn btn-default' onClick={e => this.onEdit(e, p)}>Edit</button>
+                                                    <button className='btn btn-danger' onClick={e => this.onDelete(e, p)}>Delete</button>
                                                 </td>
                                             </tr>
                                         );
