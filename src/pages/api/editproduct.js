@@ -1,12 +1,12 @@
 import connectToDatabase from '../../../lib/mongodb';
-import { Db } from 'mongodb';
+import { Db, ObjectId } from 'mongodb';
 
 export default async (req, res) => {
     try {
         const db = await connectToDatabase;
         if (db instanceof Db) {
             db.collection('products').updateOne({
-                _id: req.body._id
+                _id: ObjectId(req.body._id)
             }, {
                 $set: {
                     'product_name': req.body.product_name,

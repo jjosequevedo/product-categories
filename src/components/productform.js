@@ -5,8 +5,9 @@ class ProductForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            _id: '',
             product_name: '',
-            quantity:'',
+            quantity: '',
             price: ''
         };
     }
@@ -17,18 +18,56 @@ class ProductForm extends React.Component {
         });
     };
 
-    onClickEvent = e => {
-        e.preventDefault();
-        this.props.onSubmitForm({
-            product_name: this.state.product_name,
-            quantity: this.state.quantity,
-            price: this.state.price
-        });
+    clearValues = () => {
         this.setState({
+            _id: '',
             product_name: '',
             quantity: '',
             price: ''
         });
+    }
+
+    onAddFormAction = e => {
+        e.preventDefault();
+        if (typeof this.props.onAddFormAction == 'function') {
+            this.props.onAddFormAction({
+                product_name: this.state.product_name,
+                quantity: this.state.quantity,
+                price: this.state.price
+            });
+            this.clearValues();
+        }
+    };
+
+    onEditFormAction = e => {
+        e.preventDefault();
+        if (typeof this.props.onEditFormAction == 'function') {
+            this.props.onEditFormAction(this.state);
+            this.clearValues();
+        }
+    };
+
+    loadValues = product => {
+        this.setState({
+            _id: product._id,
+            product_name: product.product_name,
+            quantity: product.quantity,
+            price: product.price
+        });
+    };
+
+    showButtons = () => {
+        if (this.state._id != '') {
+            return (
+                <>
+                    <button type="submit" className="btn btn-primary" onClick={this.onEditFormAction}>Edit</button>
+                    <a className="btn btn-danger" onClick={this.clearValues}>Cancel</a>
+                </>
+            );
+        }
+        return (
+            <button type="submit" className="btn btn-primary" onClick={this.onAddFormAction}>Add</button>
+        );
     };
 
     render = () => {
@@ -67,7 +106,9 @@ class ProductForm extends React.Component {
                                     onChange={e => this.onChangedData(e, 'price')} />
                             </div>
                             <div className='col'>
-                                <button type="submit" className="btn btn-primary" onClick={this.onClickEvent}>Add</button>
+                                <div class="d-grid gap-2 d-md-flex">
+                                    {this.showButtons()}
+                                </div>
                             </div>
                         </div>
                     </form>

@@ -6,6 +6,7 @@ class Home extends React.Component {
 
   constructor(props) {
     super(props);
+    this.productForm = React.createRef();
     this.state = {
       products: []
     };
@@ -23,7 +24,7 @@ class Home extends React.Component {
     });
   }
 
-  onSubmitForm = data => {
+  onAddFormAction = data => {
     const request = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -37,8 +38,24 @@ class Home extends React.Component {
       });
   };
 
-  onEdit = product => {
+  onEditFormAction = data => {
+    const request = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    };
+    fetch('/api/editproduct', request)
+      .then(response => {
+        if (response.status == 200) {
+          this.loadList();
+        }
+      });
+  };
 
+  onEdit = product => {
+    if (typeof this.productForm.current.loadValues == 'function') {
+      this.productForm.current.loadValues(product);
+    }
   };
 
   onDelete = product => {
@@ -65,7 +82,10 @@ class Home extends React.Component {
                 Product details
               </div>
               <div className="card-body">
-                <ProductForm onSubmitForm={this.onSubmitForm} />
+                <ProductForm
+                  ref={this.productForm}
+                  onAddFormAction={this.onAddFormAction}
+                  onEditFormAction={this.onEditFormAction} />
                 <ProductList
                   products={this.state.products}
                   onEdit={this.onEdit}
