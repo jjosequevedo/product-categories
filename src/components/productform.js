@@ -106,7 +106,7 @@ class ProductForm extends React.Component {
                                     onChange={e => this.onChangedData(e, 'price')} />
                             </div>
                             <div className='col'>
-                                <div class="d-grid gap-2 d-md-flex">
+                                <div className="d-grid gap-2 d-md-flex">
                                     {this.showButtons()}
                                 </div>
                             </div>
