@@ -1,11 +1,11 @@
 import React from 'react';
 
+/**
+ * This is the product list component.
+ */
 class ProductList extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
+    // Action to edit a product.
     onEdit = (e, product) => {
         e.preventDefault();
         if (typeof this.props.onEdit == 'function') {
@@ -13,6 +13,7 @@ class ProductList extends React.Component {
         }
     };
 
+    // Action to delete a product.
     onDelete = (e, product) => {
         e.preventDefault();
         if (typeof this.props.onEdit == 'function') {
@@ -41,6 +42,7 @@ class ProductList extends React.Component {
                                 </tr>
                             </thead>
                             <tbody>
+                                {/* List products */}
                                 {
                                     this.props.products.map((p, i) => {
                                         return (

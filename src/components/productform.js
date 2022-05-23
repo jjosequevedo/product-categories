@@ -1,5 +1,8 @@
 import React from 'react';
 
+/**
+ * This is a product form component.
+ */
 class ProductForm extends React.Component {
 
     constructor(props) {
@@ -12,12 +15,14 @@ class ProductForm extends React.Component {
         };
     }
 
+    // Update the state after adding or editing a product.
     onChangedData = (e, field_name) => {
         this.setState({
             [field_name]: e.target.value
         });
     };
 
+    // Clear values.
     clearValues = () => {
         this.setState({
             _id: '',
@@ -27,6 +32,7 @@ class ProductForm extends React.Component {
         });
     }
 
+    // Add a new product.
     onAddFormAction = e => {
         e.preventDefault();
         if (typeof this.props.onAddFormAction == 'function' && this.isValid()) {
@@ -39,6 +45,7 @@ class ProductForm extends React.Component {
         }
     };
 
+    // Edit a product.
     onEditFormAction = e => {
         e.preventDefault();
         if (typeof this.props.onEditFormAction == 'function' && this.isValid()) {
@@ -47,6 +54,7 @@ class ProductForm extends React.Component {
         }
     };
 
+    // Load the values after selecting a product from the list.
     loadValues = product => {
         this.setState({
             _id: product._id,
@@ -56,6 +64,7 @@ class ProductForm extends React.Component {
         });
     };
 
+    // Display buttons according to the operation.
     showButtons = () => {
         if (this.state._id != '') {
             return (
@@ -70,6 +79,7 @@ class ProductForm extends React.Component {
         );
     };
 
+    // Check if the state is valid.
     isValid = () => {
         const isValid = Object.keys(this.state).every(key => {
             if (key != '_id') {
