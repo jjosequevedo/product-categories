@@ -22,6 +22,7 @@ npx next dev
 
 ## Important!
 Make sure the mongo service is running.
+Rename the file `.env.example` to `.env.local` and enter the details to connect to MongoDb.
 
 If everything is ready, you can open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
