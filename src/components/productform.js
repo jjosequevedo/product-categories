@@ -29,7 +29,7 @@ class ProductForm extends React.Component {
 
     onAddFormAction = e => {
         e.preventDefault();
-        if (typeof this.props.onAddFormAction == 'function') {
+        if (typeof this.props.onAddFormAction == 'function' && this.isValid()) {
             this.props.onAddFormAction({
                 product_name: this.state.product_name,
                 quantity: this.state.quantity,
@@ -41,7 +41,7 @@ class ProductForm extends React.Component {
 
     onEditFormAction = e => {
         e.preventDefault();
-        if (typeof this.props.onEditFormAction == 'function') {
+        if (typeof this.props.onEditFormAction == 'function' && this.isValid()) {
             this.props.onEditFormAction(this.state);
             this.clearValues();
         }
@@ -70,6 +70,19 @@ class ProductForm extends React.Component {
         );
     };
 
+    isValid = () => {
+        const isValid = Object.keys(this.state).every(key => {
+            if (key != '_id') {
+                return this.state[key] != '';
+            }
+            return true;
+        });
+        if (!isValid) {
+            alert("There are some fields empty!");
+        }
+        return isValid;
+    };
+
     render = () => {
         return (
             <div className='card mb-2 mt-2'>
@@ -85,6 +98,7 @@ class ProductForm extends React.Component {
                                     name="product_name"
                                     placeholder='Product name'
                                     value={this.state.product_name}
+                                    required={true}
                                     onChange={e => this.onChangedData(e, 'product_name')} />
                             </div>
                             <div className="col">
@@ -94,6 +108,7 @@ class ProductForm extends React.Component {
                                     name="product_quantity"
                                     placeholder='Quantity'
                                     value={this.state.quantity}
+                                    required={true}
                                     onChange={e => this.onChangedData(e, 'quantity')} />
                             </div>
                             <div className="col">
@@ -103,6 +118,7 @@ class ProductForm extends React.Component {
                                     name="product_price"
                                     placeholder='Price'
                                     value={this.state.price}
+                                    required={true}
                                     onChange={e => this.onChangedData(e, 'price')} />
                             </div>
                             <div className='col'>
