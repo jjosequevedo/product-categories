@@ -1,5 +1,5 @@
 import connectToDatabase from '../../../lib/mongodb';
-import { Db } from 'mongodb';
+import { Db, ObjectId } from 'mongodb';
 
 /**
  * API to add a product.
@@ -14,7 +14,8 @@ export default async (req, res) => {
             db.collection('products').insertOne({
                 'product_name': req.body.product_name,
                 'quantity': req.body.quantity,
-                'price': req.body.price
+                'price': req.body.price,
+                'category': ObjectId(req.body.category)
             });
         }
         // Return 200 if everything was successful.

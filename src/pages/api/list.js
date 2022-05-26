@@ -1,5 +1,5 @@
 import connectToDatabase from '../../../lib/mongodb';
-import { Db } from 'mongodb';
+import { Db, ObjectId } from 'mongodb';
 
 /**
  * API to list a product.
@@ -14,7 +14,14 @@ export default async (req, res) => {
         // Get a list of products from the collection. By default 20 products
         products = await db
             .collection("products")
-            .find({})
+            .aggregate([{
+                $lookup: {
+                        from: "categories",
+                        localField: "category",
+                        foreignField: "_id",
+                        as: "categories"
+                    }
+            }])
             .sort({ id: -1 })
             .limit(20)
             .toArray();

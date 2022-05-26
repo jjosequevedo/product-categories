@@ -1,8 +1,8 @@
 import connectToDatabase from '../../../lib/mongodb';
-import { Db, ObjectId } from 'mongodb';
+import { Db } from 'mongodb';
 
 /**
- * API to edit a product.
+ * API to add a category.
  */
 export default async (req, res) => {
     try {
@@ -10,16 +10,9 @@ export default async (req, res) => {
         const db = await connectToDatabase;
         // Check if db is a database object.
         if (db instanceof Db) {
-            // Update the product in the collection using the _id.
-            db.collection('products').updateOne({
-                _id: ObjectId(req.body._id)
-            }, {
-                $set: {
-                    'product_name': req.body.product_name,
-                    'quantity': req.body.quantity,
-                    'price': req.body.price,
-                    'category': ObjectId(req.body.category)
-                }
+            // Add a category to the collection.
+            db.collection('categories').insertOne({
+                'category_name': req.body.category_name
             });
         }
         // Return 200 if everything was successful.

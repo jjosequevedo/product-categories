@@ -26,7 +26,13 @@ class Home extends React.Component {
     fetch('/api/list').then(response => {
       return response.text();
     }).then(value => {
-      this.setState({ products: JSON.parse(value) });
+      let products = [];
+      try {
+        products = JSON.parse(value);
+      } catch (e) { 
+        
+      }
+      this.setState({ products: products });
     });
   }
 
@@ -84,29 +90,18 @@ class Home extends React.Component {
 
   render = () => {
     return (
-      <div className='container'>
-        <div className='row'>
-          <div className='col'>
-            <div className="card mt-2">
-              <div className="card-header">
-                Product details
-              </div>
-              <div className="card-body">
-                {/* This is the form to add or edit a product. */}
-                <ProductForm
-                  ref={this.productForm}
-                  onAddFormAction={this.onAddFormAction}
-                  onEditFormAction={this.onEditFormAction} />
-                  {/*This is a component to list products and also has the actions to edit or delete them. */}
-                <ProductList
-                  products={this.state.products}
-                  onEdit={this.onEdit}
-                  onDelete={this.onDelete} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <>
+        {/* This is the form to add or edit a product. */}
+        <ProductForm
+          ref={this.productForm}
+          onAddFormAction={this.onAddFormAction}
+          onEditFormAction={this.onEditFormAction} />
+        {/*This is a component to list products and also has the actions to edit or delete them. */}
+        <ProductList
+          products={this.state.products}
+          onEdit={this.onEdit}
+          onDelete={this.onDelete} />
+      </>
     );
   }
 }

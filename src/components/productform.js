@@ -11,8 +11,23 @@ class ProductForm extends React.Component {
             _id: '',
             product_name: '',
             quantity: '',
-            price: ''
+            price: '',
+            category: '',
+            categories: []
         };
+    }
+
+    componentDidMount = () => {
+        this.loadCategories();
+    };
+
+    // Load a list of categories.
+    loadCategories = () => {
+        fetch('/api/listcategories').then(response => {
+            return response.text();
+        }).then(value => {
+            this.setState({ categories: JSON.parse(value) });
+        });
     }
 
     // Update the state after adding or editing a product.
@@ -28,7 +43,8 @@ class ProductForm extends React.Component {
             _id: '',
             product_name: '',
             quantity: '',
-            price: ''
+            price: '',
+            category: ''
         });
     }
 
@@ -39,7 +55,8 @@ class ProductForm extends React.Component {
             this.props.onAddFormAction({
                 product_name: this.state.product_name,
                 quantity: this.state.quantity,
-                price: this.state.price
+                price: this.state.price,
+                category: this.state.category,
             });
             this.clearValues();
         }
@@ -60,7 +77,8 @@ class ProductForm extends React.Component {
             _id: product._id,
             product_name: product.product_name,
             quantity: product.quantity,
-            price: product.price
+            price: product.price,
+            category: product.category
         });
     };
 
@@ -83,7 +101,7 @@ class ProductForm extends React.Component {
     isValid = () => {
         const isValid = Object.keys(this.state).every(key => {
             if (key != '_id') {
-                return this.state[key] != '';
+                return this.state[key] != '' && this.state[key] != '-1';
             }
             return true;
         });
@@ -130,6 +148,20 @@ class ProductForm extends React.Component {
                                     value={this.state.price}
                                     required={true}
                                     onChange={e => this.onChangedData(e, 'price')} />
+                            </div>
+                            <div className="col">
+                                <select placeholder='Select a category'
+                                    className="form-select"
+                                    id="category"
+                                    name="category"
+                                    value={this.state.category}
+                                    required={true}
+                                    onChange={e => this.onChangedData(e, 'category')}>
+                                    <option value={'-1'}>-Select-</option>
+                                    {
+                                        this.state.categories.map(c => <option value={c._id}>{c.category_name}</option>)
+                                    }
+                                </select>
                             </div>
                             <div className='col'>
                                 <div className="d-grid gap-2 d-md-flex">

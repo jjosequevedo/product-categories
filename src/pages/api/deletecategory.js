@@ -2,7 +2,7 @@ import connectToDatabase from '../../../lib/mongodb';
 import { Db, ObjectId } from 'mongodb';
 
 /**
- * API to edit a product.
+ * API to delete a category.
  */
 export default async (req, res) => {
     try {
@@ -10,17 +10,8 @@ export default async (req, res) => {
         const db = await connectToDatabase;
         // Check if db is a database object.
         if (db instanceof Db) {
-            // Update the product in the collection using the _id.
-            db.collection('products').updateOne({
-                _id: ObjectId(req.body._id)
-            }, {
-                $set: {
-                    'product_name': req.body.product_name,
-                    'quantity': req.body.quantity,
-                    'price': req.body.price,
-                    'category': ObjectId(req.body.category)
-                }
-            });
+            // Delete a category in the collection by _id.
+            db.collection('categories').deleteOne({ "_id": ObjectId(req.body._id) });
         }
         // Return 200 if everything was successful.
         res.status(200).json("Successful!");
